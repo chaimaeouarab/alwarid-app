@@ -315,7 +315,7 @@ export default function UrgenceMode() {
             {/* PROTOCOLE RAPIDE MODAL */}
             {showProtocole && (
                 <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)' }} onClick={() => setShowProtocole(false)}>
-                    <div className="card fade-in" style={{ width: 650, maxHeight: '80vh', overflow: 'auto' }} onClick={e => e.stopPropagation()}>
+                    <div className="card fade-in" style={{ width: 'min(650px, 92vw)', maxHeight: '80vh', overflow: 'auto', margin: '0 12px' }} onClick={e => e.stopPropagation()}>
                         <div className="card-header" style={{ position: 'sticky', top: 0, background: 'var(--bg-card)', zIndex: 1 }}>
                             <h3 style={{ fontSize: 16, fontWeight: 700, color: 'var(--severity-critical)' }}>Protocole Rapide</h3>
                             <button className="btn btn-ghost btn-icon" onClick={() => setShowProtocole(false)}><svg style={{ width: 18, height: 18 }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg></button>
@@ -362,7 +362,7 @@ Genere par Alwarid — Outil d'aide a la decision`}</pre>
             {/* SCAN IMAGE LIGHTBOX */}
             {viewingScan && (
                 <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 1001, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)' }} onClick={() => setViewingScan(null)}>
-                    <div className="fade-in" style={{ maxWidth: 700, width: '90%', background: 'var(--bg-card)', borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: '0 25px 50px rgba(0,0,0,0.5)' }} onClick={e => e.stopPropagation()}>
+                    <div className="fade-in" style={{ width: 'min(680px, 92vw)', background: 'var(--bg-card)', borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: '0 25px 50px rgba(0,0,0,0.5)' }} onClick={e => e.stopPropagation()}>
                         <div style={{ background: '#111', position: 'relative', width: '100%', height: '60vh', maxHeight: '60vh' }}>
                             <Image
                                 src={viewingScan.image}
@@ -398,7 +398,7 @@ Genere par Alwarid — Outil d'aide a la decision`}</pre>
                 borderBottom: '1px solid var(--border-default)',
                 padding: '16px 24px', animation: 'fadeInUp 0.3s ease both'
             }}>
-                <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
+                <div style={{ maxWidth: 1120, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap', justifyContent: 'center' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
                         <div style={{
                             width: 56, height: 56, borderRadius: 'var(--radius-lg)',
@@ -426,11 +426,11 @@ Genere par Alwarid — Outil d'aide a la decision`}</pre>
             </div>
 
             {/* MAIN CONTENT */}
-            <div style={{ maxWidth: 1400, margin: '0 auto', padding: 24 }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+            <div style={{ maxWidth: 1120, margin: '0 auto', padding: '20px 16px 28px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 520px))', gap: 18, justifyContent: 'center', alignItems: 'start' }}>
 
                     {/* LEFT COLUMN */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
 
                         {/* Interactions */}
                         <div style={{ animation: 'fadeInUp 0.4s ease both' }}>
@@ -471,7 +471,7 @@ Genere par Alwarid — Outil d'aide a la decision`}</pre>
                         <div className="card" style={{ animation: 'fadeInUp 0.7s ease both' }}>
                             <div className="card-header"><h3 style={{ fontSize: 14, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}><span style={{ color: 'var(--text-muted)' }}>{ICN.ecg}</span> Indicateurs vitaux</h3></div>
                             <div className="card-body">
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 12 }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: 10 }}>
                                     {[
                                         { key: 'ta_sys', label: 'TA Sys', unit: 'mmHg', placeholder: '120' },
                                         { key: 'ta_dia', label: 'TA Dia', unit: 'mmHg', placeholder: '80' },
@@ -512,7 +512,7 @@ Genere par Alwarid — Outil d'aide a la decision`}</pre>
                                     <span className="badge badge-neutral" title="Consultations dentaire, dermato, ophtalmo, ORL, pneumo, rhumato... filtrees">{filteredOut} filtres</span>
                                 </div>
                             </div>
-                            <div style={{ maxHeight: 350, overflowY: 'auto', padding: 16 }}>
+                            <div style={{ maxHeight: 300, overflowY: 'auto', padding: 16 }}>
                                 <div className="timeline">
                                     {urgentHistory.map((entry, i) => {
                                         const typeInfo = HISTORY_TYPES[entry.type] || { label: entry.type, color: 'info' };
@@ -533,13 +533,13 @@ Genere par Alwarid — Outil d'aide a la decision`}</pre>
                         </div>
                     </div>
 
-                    {/* RIGHT COLUMN: 3D + Chatbot */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                    {/* RIGHT COLUMN: 3D */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                         {/* 3D Viewer */}
                         <div style={{
                             background: 'linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%)',
                             borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-default)',
-                            height: 400, position: 'relative', overflow: 'hidden', animation: 'fadeInUp 0.4s ease both'
+                            height: 340, position: 'relative', overflow: 'hidden', animation: 'fadeInUp 0.4s ease both'
                         }}>
                             <Suspense fallback={<div className="skeleton" style={{ width: '100%', height: '100%' }} />}>
                                 <BodyViewer3D onRegionSelect={setSelectedRegion} regions={patient.bodyRegions} />
@@ -561,12 +561,11 @@ Genere par Alwarid — Outil d'aide a la decision`}</pre>
                             </div>
                         </div>
 
-                        {/* AI Chatbot */}
-                        <UrgenceChatbot />
+                        {/* Chat IA deplace vers le popup global (bouton bas droite) */}
 
                         {/* Quick Info */}
                         <div className="card" style={{ animation: 'fadeInUp 0.6s ease both' }}>
-                            <div className="card-body" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0 }}>
+                            <div className="card-body" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 0 }}>
                                 <div style={{ padding: 20, borderRight: '1px solid var(--border-subtle)' }}>
                                     <div style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.5px', color: 'var(--text-muted)', marginBottom: 8 }}>Contact urgence</div>
                                     <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 4 }}>{patient.emergencyContact}</div>

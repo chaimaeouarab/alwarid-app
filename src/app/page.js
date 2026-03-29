@@ -11,8 +11,8 @@ export default function LoginPage() {
   };
 
   return (
-    <>
-      <div className="page-center" style={{ background: '#ffffff' }}>
+    <div className="login-page">
+      <div className="page-center login-page-center">
         <div className="fade-in-up">
           <div className="login-card">
             <div className="login-header">
@@ -68,7 +68,7 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
-      <footer className="page-footer">© 2026 Alwarid. All rights reserved.</footer>
-    </>
+      <footer className="page-footer login-page-footer">© 2026 Alwarid. All rights reserved.</footer>
+    </div>
   );
 }
