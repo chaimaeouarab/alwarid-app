@@ -7,27 +7,27 @@
 
 /* ──────────── CSS VARIABLES ──────────── */
 :root {
-    --primary-50: #eff6ff;
-    --primary-100: #dbeafe;
-    --primary-200: #bfdbfe;
-    --primary-300: #93c5fd;
-    --primary-400: #60a5fa;
-    --primary-500: #3b82f6;
-    --primary-600: #2563eb;
-    --primary-700: #1d4ed8;
-    --primary-800: #1e40af;
-    --primary-900: #1e3a8a;
+    --primary-50: #eaf6fc;
+    --primary-100: #d4ecf9;
+    --primary-200: #a9daf3;
+    --primary-300: #7ec7ec;
+    --primary-400: #53b5e6;
+    --primary-500: #29a2dd;
+    --primary-600: #2592c7;
+    --primary-700: #2182b1;
+    --primary-800: #1d729b;
+    --primary-900: #196185;
 
-    --accent-50: #eff6ff;
-    --accent-100: #dbeafe;
-    --accent-200: #bfdbfe;
-    --accent-300: #93c5fd;
-    --accent-400: #60a5fa;
-    --accent-500: #3b82f6;
-    --accent-600: #2563eb;
-    --accent-700: #1d4ed8;
-    --accent-800: #1e40af;
-    --accent-900: #1e3a8a;
+    --accent-50: #eaf6fc;
+    --accent-100: #d4ecf9;
+    --accent-200: #a9daf3;
+    --accent-300: #7ec7ec;
+    --accent-400: #53b5e6;
+    --accent-500: #29a2dd;
+    --accent-600: #2592c7;
+    --accent-700: #2182b1;
+    --accent-800: #1d729b;
+    --accent-900: #196185;
 
     --neutral-0: #ffffff;
     --neutral-25: #fcfcfd;
@@ -257,6 +257,18 @@ img {
     align-items: center;
     justify-content: center;
     padding: var(--space-6);
+}
+
+.app-shell {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background: var(--neutral-0);
+}
+
+.app-main {
+    flex: 1;
+    width: 100%;
 }
 
 .login-page {
@@ -1591,8 +1603,8 @@ img {
 }
 
 .ai-popup-trigger {
-    border: 1px solid #1d4ed8;
-    background: linear-gradient(135deg, #1d4ed8 0%, #0f172a 100%);
+    border: 1px solid #29a2dd;
+    background: linear-gradient(135deg, #29a2dd 0%, #0f172a 100%);
     color: #fff;
     height: 56px;
     border-radius: 9999px;
@@ -1652,8 +1664,8 @@ img {
     width: 30px;
     height: 30px;
     border-radius: 9999px;
-    background: #dbeafe;
-    color: #1d4ed8;
+    background: #eaf6fc;
+    color: #29a2dd;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1799,6 +1811,14 @@ img {
     gap: var(--space-5);
 }
 
+.urgence-main-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(320px, 520px));
+    gap: 18px;
+    justify-content: center;
+    align-items: start;
+}
+
 .alert-list {
     display: flex;
     flex-direction: column;
@@ -1876,6 +1896,10 @@ img {
         grid-template-columns: 1fr;
     }
 
+    .urgence-main-grid {
+        grid-template-columns: 1fr;
+    }
+
     .body-3d-sidebar {
         border-left: none;
         border-top: 1px solid var(--border-default);
@@ -1899,4 +1923,111 @@ img {
         height: 52px;
         padding: 0 14px 0 12px;
     }
+}
+
+/* ═══════════════════════════════════════════════════════
+   MARKDOWN RENDERING — chat bubbles & reports
+   ═══════════════════════════════════════════════════════ */
+
+.markdown-body {
+    line-height: 1.65;
+    color: inherit;
+    font-size: inherit;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3 {
+    font-weight: 700;
+    margin: 1em 0 0.4em;
+    line-height: 1.3;
+    color: var(--text-primary);
+}
+.markdown-body h1 { font-size: 1.15em; }
+.markdown-body h2 { font-size: 1.05em; border-bottom: 1px solid var(--border-subtle); padding-bottom: 4px; }
+.markdown-body h3 { font-size: 0.95em; }
+
+.markdown-body p {
+    margin: 0.4em 0;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+    margin: 0.4em 0;
+    padding-left: 1.4em;
+}
+
+.markdown-body li {
+    margin: 0.2em 0;
+}
+
+.markdown-body strong {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.markdown-body em {
+    font-style: italic;
+    color: var(--text-secondary);
+}
+
+.markdown-body code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.88em;
+    background: var(--neutral-100);
+    border: 1px solid var(--border-subtle);
+    border-radius: 3px;
+    padding: 1px 5px;
+    color: var(--primary-700);
+}
+
+.markdown-body blockquote {
+    border-left: 3px solid var(--primary-300);
+    padding: 4px 12px;
+    margin: 0.5em 0;
+    background: var(--primary-50);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    color: var(--text-secondary);
+    font-size: 0.93em;
+}
+
+.markdown-body hr {
+    border: none;
+    border-top: 1px solid var(--border-subtle);
+    margin: 0.8em 0;
+}
+
+/* Taille réduite pour les bulles de chat (urgence + popup) */
+.markdown-sm.markdown-body {
+    font-size: 12px;
+}
+.markdown-sm.markdown-body h1 { font-size: 13px; }
+.markdown-sm.markdown-body h2 { font-size: 12.5px; }
+.markdown-sm.markdown-body h3 { font-size: 12px; }
+
+/* Rapports — styles légèrement plus grands et lisibles */
+.markdown-report.markdown-body {
+    font-size: 13px;
+    line-height: 1.75;
+}
+.markdown-report.markdown-body h1 { font-size: 16px; margin-top: 1.2em; }
+.markdown-report.markdown-body h2 { font-size: 14px; margin-top: 1em; }
+.markdown-report.markdown-body h3 { font-size: 13px; }
+.markdown-report.markdown-body code {
+    font-size: 12px;
+    background: var(--neutral-50);
+}
+.markdown-report.markdown-body blockquote {
+    border-left-color: var(--severity-warning-border);
+    background: var(--severity-warning-bg);
+}
+
+/* Bulles AI dans le popup — pas de marge top sur le premier élément */
+.ai-popup-bubble.ai .markdown-body > *:first-child,
+.ai-popup-bubble .markdown-body > *:first-child {
+    margin-top: 0;
+}
+.ai-popup-bubble.ai .markdown-body > *:last-child,
+.ai-popup-bubble .markdown-body > *:last-child {
+    margin-bottom: 0;
 }

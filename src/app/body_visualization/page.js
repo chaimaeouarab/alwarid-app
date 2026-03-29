@@ -22,10 +22,10 @@ export default function BodyVisualizationPage() {
   const region = patient.bodyRegions[selectedRegion];
 
   return (
-    <>
+    <div className="app-shell">
       <Header showMode modeName="consultation" patientName="Youssef El Amrani" patientId="PAT-2024-00147" />
 
-      <div style={{ minHeight: 'calc(100vh - 80px)', background: 'linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%)' }}>
+      <main className="app-main" style={{ background: 'linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%)' }}>
         <div style={{ maxWidth: 1400, margin: '0 auto', padding: 24 }}>
           <div style={{ marginBottom: 16 }}>
             <h1 style={{ fontSize: 20, fontWeight: 700 }}>Cartographie Medicale 3D</h1>
@@ -112,8 +112,8 @@ export default function BodyVisualizationPage() {
             </div>
           </div>
         </div>
-      </div>
+      </main>
       <footer className="page-footer">© 2026 Alwarid. All rights reserved.</footer>
-    </>
+    </div>
   );
 }

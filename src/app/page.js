@@ -11,8 +11,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="login-page">
-      <div className="page-center login-page-center">
+    <div className="app-shell login-page">
+      <main className="app-main page-center login-page-center">
         <div className="fade-in-up">
           <div className="login-card">
             <div className="login-header">
@@ -67,7 +67,7 @@ export default function LoginPage() {
             </form>
           </div>
         </div>
-      </div>
+      </main>
       <footer className="page-footer login-page-footer">© 2026 Alwarid. All rights reserved.</footer>
     </div>
   );

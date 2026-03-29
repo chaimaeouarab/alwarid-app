@@ -7,9 +7,12 @@
 const FORMAT_RULES = `
 
 REGLES DE FORMAT OBLIGATOIRES :
-- N'utilise JAMAIS de formatage Markdown. Pas de ** (gras), pas de # (titres), pas de _ (italique), pas de backticks.
-- Utilise UNIQUEMENT du texte brut.
-- Pour structurer : utilise des lignes de "=" pour les titres, des tirets "-" pour les puces, des crochets [CRITIQUE] pour les niveaux.
+- Utilise le formatage Markdown pour structurer ta reponse.
+- ## pour les titres de sections, ### pour les sous-sections.
+- **texte** pour les elements importants et critiques.
+- - ou * pour les listes a puces.
+- > pour les notes et avertissements importants.
+- \`valeur\` pour les valeurs numeriques et codes medicaux.
 - Sois DETAILLE et COMPLET. Donne des reponses longues et structurees.
 - Chaque reponse doit faire au minimum 10 lignes pour etre utile au medecin.
 - Utilise des sections claires separees par des lignes vides.

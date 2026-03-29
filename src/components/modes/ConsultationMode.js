@@ -3,6 +3,7 @@
 import { useState, useRef, Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import ReactMarkdown from 'react-markdown';
 import { MOCK_PATIENTS, HISTORY_TYPES, formatDate } from '@/data/mockData';
 
 const BodyViewer3D = dynamic(() => import('@/components/BodyViewer3D').then(m => ({ default: m.BodyViewer3D })), { ssr: false });
@@ -352,6 +353,7 @@ function DocumentsAITab() {
     const [generatedReport, setGeneratedReport] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
     const [displayedReport, setDisplayedReport] = useState('');
+    const [reportEditMode, setReportEditMode] = useState(false);
     const [ecgFile, setEcgFile] = useState(null);
     const [ecgPreview, setEcgPreview] = useState(null);
     const [ecgAnalyzing, setEcgAnalyzing] = useState(false);
@@ -510,11 +512,13 @@ function DocumentsAITab() {
                 }
             }
             setGeneratedReport(fullText);
+            setReportEditMode(false);
             setIsGenerating(false);
         } catch {
             // Fallback: use local templates
             const report = getLocalReport(docType);
             setGeneratedReport(report);
+            setReportEditMode(false);
             typeReport(report);
         }
     };
@@ -917,19 +921,43 @@ function DocumentsAITab() {
 
                                             {/* Editable report content */}
                                             {isGenerating ? (
-                                                <div style={{ padding: 20 }}>
-                                                    <pre style={{ fontSize: 12, lineHeight: 1.6, fontFamily: "'IBM Plex Mono', monospace", whiteSpace: 'pre-wrap', color: 'var(--text-secondary)' }}>{displayedReport}|</pre>
+                                                <div style={{ padding: '20px 24px' }}>
+                                                    <div className="markdown-body markdown-report">
+                                                        <ReactMarkdown>{displayedReport}</ReactMarkdown>
+                                                    </div>
+                                                    <span style={{ display: 'inline-block', width: 2, height: '1em', background: 'var(--primary-600)', marginLeft: 2, animation: 'pulse 0.8s ease infinite', verticalAlign: 'text-bottom' }} />
                                                 </div>
                                             ) : (
-                                                <textarea
-                                                    style={{
-                                                        width: '100%', minHeight: 400, padding: 20, border: 'none', outline: 'none', resize: 'vertical',
-                                                        fontSize: 12, lineHeight: 1.6, fontFamily: "'IBM Plex Mono', monospace",
-                                                        color: 'var(--text-secondary)', background: 'white'
-                                                    }}
-                                                    value={generatedReport}
-                                                    onChange={e => setGeneratedReport(e.target.value)}
-                                                />
+                                                <>
+                                                    {/* Toggle aperçu / modifier */}
+                                                    <div style={{ padding: '8px 20px', borderBottom: '1px solid var(--border-subtle)', display: 'flex', gap: 6 }}>
+                                                        <button
+                                                            className={`btn btn-sm ${!reportEditMode ? 'btn-primary' : 'btn-ghost'}`}
+                                                            onClick={() => setReportEditMode(false)}
+                                                        >Aperçu</button>
+                                                        <button
+                                                            className={`btn btn-sm ${reportEditMode ? 'btn-primary' : 'btn-ghost'}`}
+                                                            onClick={() => setReportEditMode(true)}
+                                                        >Modifier</button>
+                                                    </div>
+                                                    {reportEditMode ? (
+                                                        <textarea
+                                                            style={{
+                                                                width: '100%', minHeight: 400, padding: 20, border: 'none', outline: 'none', resize: 'vertical',
+                                                                fontSize: 13, lineHeight: 1.7, fontFamily: "'IBM Plex Mono', monospace",
+                                                                color: 'var(--text-secondary)', background: 'white'
+                                                            }}
+                                                            value={generatedReport}
+                                                            onChange={e => setGeneratedReport(e.target.value)}
+                                                        />
+                                                    ) : (
+                                                        <div style={{ padding: '20px 24px' }}>
+                                                            <div className="markdown-body markdown-report">
+                                                                <ReactMarkdown>{generatedReport}</ReactMarkdown>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </>
                                             )}
                                         </div>
                                     )}

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { MOCK_PATIENTS } from '@/data/mockData';
 import { SYSTEM_PROMPTS, buildPatientContext } from '@/data/prompts';
 
@@ -228,12 +229,26 @@ export default function PopupAIChat({ mode }) {
                     <div className="ai-popup-messages">
                         {messages.map((msg, i) => (
                             <div key={`${msg.role}-${i}`} className={`ai-popup-bubble ${msg.role}`}>
-                                {msg.text}
+                                {msg.role === 'ai' ? (
+                                    <div className="markdown-body">
+                                        <ReactMarkdown>{msg.text}</ReactMarkdown>
+                                    </div>
+                                ) : (
+                                    msg.text
+                                )}
                             </div>
                         ))}
 
                         {isTyping && typingMode === mode && (
-                            <div className="ai-popup-bubble ai">{streamingText || 'Analyse en cours...'}</div>
+                            <div className="ai-popup-bubble ai">
+                                {streamingText
+                                    ? (
+                                        <div className="markdown-body">
+                                            <ReactMarkdown>{streamingText}</ReactMarkdown>
+                                        </div>
+                                    )
+                                    : 'Analyse en cours...'}
+                            </div>
                         )}
                         <div ref={bottomRef} />
                     </div>
