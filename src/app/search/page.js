@@ -78,7 +78,7 @@ export default function SearchPage() {
             </main>
 
             <footer className="page-footer">
-                Alwarid v2.0 — Outil d&apos;aide a la decision — La decision revient au medecin traitant — Conformite Loi 09-08 (CNDP)
+                © 2026 Alwarid. All rights reserved.
             </footer>
         </>
     );

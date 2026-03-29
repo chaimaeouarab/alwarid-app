@@ -33,8 +33,11 @@ function DashboardContent() {
 
 export default function DashboardPage() {
     return (
-        <Suspense fallback={<div style={{ padding: 40, textAlign: 'center' }}>Chargement...</div>}>
-            <DashboardContent />
-        </Suspense>
+        <>
+            <Suspense fallback={<div style={{ padding: 40, textAlign: 'center' }}>Chargement...</div>}>
+                <DashboardContent />
+            </Suspense>
+            <footer className="page-footer">© 2026 Alwarid. All rights reserved.</footer>
+        </>
     );
 }

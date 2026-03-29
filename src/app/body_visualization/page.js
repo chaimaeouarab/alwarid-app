@@ -113,6 +113,7 @@ export default function BodyVisualizationPage() {
           </div>
         </div>
       </div>
+      <footer className="page-footer">© 2026 Alwarid. All rights reserved.</footer>
     </>
   );
 }

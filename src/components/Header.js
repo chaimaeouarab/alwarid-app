@@ -36,13 +36,6 @@ export default function Header({ showMode, modeName, mode, patientName, patientI
                         {patientId && <span style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 400 }}>{patientId}</span>}
                     </div>
                 )}
-                <div className="disclaimer-bar">
-                    <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
-                        <path d="M12 9v4" /><path d="M12 17h.01" />
-                    </svg>
-                    La decision revient au medecin traitant
-                </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <div className="user-avatar">MA</div>
                     {!showBackToSearch && (

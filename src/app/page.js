@@ -12,13 +12,7 @@ export default function LoginPage() {
 
   return (
     <>
-      <div style={{
-        position: 'fixed', inset: 0, opacity: 0.03, pointerEvents: 'none',
-        backgroundImage: 'radial-gradient(circle at 25% 25%, var(--primary-700) 1px, transparent 1px), radial-gradient(circle at 75% 75%, var(--primary-700) 1px, transparent 1px)',
-        backgroundSize: '40px 40px'
-      }} />
-
-      <div className="page-center" style={{ background: 'linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 50%, #f0f9ff 100%)' }}>
+      <div className="page-center" style={{ background: '#ffffff' }}>
         <div className="fade-in-up">
           <div className="login-card">
             <div className="login-header">
@@ -71,18 +65,10 @@ export default function LoginPage() {
                 Se connecter
               </button>
             </form>
-            <div className="login-footer">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 12, height: 12, display: 'inline', verticalAlign: 'middle', marginRight: 4, color: 'var(--severity-warning)' }}>
-                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" /><path d="M12 9v4" /><path d="M12 17h.01" />
-              </svg>
-              Outil d&apos;aide a la decision — La decision revient au medecin traitant
-            </div>
           </div>
-          <p style={{ textAlign: 'center', marginTop: 20, fontSize: 11, color: 'var(--text-muted)' }}>
-            Alwarid v2.0 — Region Fes-Meknes — Conformite Loi 09-08 (CNDP)
-          </p>
         </div>
       </div>
+      <footer className="page-footer">© 2026 Alwarid. All rights reserved.</footer>
     </>
   );
 }

@@ -394,17 +394,17 @@ Genere par Alwarid — Outil d'aide a la decision`}</pre>
 
             {/* CRITICAL BANNER */}
             <div style={{
-                background: 'linear-gradient(135deg, #fef2f2 0%, #fff1f2 100%)',
-                borderBottom: '2px solid var(--severity-critical-border)',
+                background: 'var(--bg-card)',
+                borderBottom: '1px solid var(--border-default)',
                 padding: '16px 24px', animation: 'fadeInUp 0.3s ease both'
             }}>
                 <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
                         <div style={{
                             width: 56, height: 56, borderRadius: 'var(--radius-lg)',
-                            background: 'linear-gradient(135deg, var(--severity-critical) 0%, #991b1b 100%)',
+                            background: 'linear-gradient(135deg, var(--neutral-700) 0%, var(--neutral-900) 100%)',
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            fontWeight: 700, fontSize: 20, color: 'white', boxShadow: '0 4px 12px rgba(220,38,38,0.3)'
+                            fontWeight: 700, fontSize: 20, color: 'white', boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
                         }}>YA</div>
                         <div>
                             <div style={{ fontSize: 20, fontWeight: 700 }}>Youssef El Amrani</div>
@@ -412,10 +412,10 @@ Genere par Alwarid — Outil d'aide a la decision`}</pre>
                         </div>
                     </div>
                     <div style={{ display: 'flex', gap: 12, flex: 1, justifyContent: 'center', flexWrap: 'wrap' }}>
-                        <div style={{ padding: '10px 20px', borderRadius: 'var(--radius-lg)', background: '#dc2626', color: 'white', fontWeight: 700, fontSize: 18, display: 'flex', alignItems: 'center', gap: 10, boxShadow: '0 4px 12px rgba(220,38,38,0.4)', animation: 'pulse 2s ease infinite' }}>
+                        <div style={{ padding: '10px 20px', borderRadius: 'var(--radius-lg)', background: '#dc2626', color: 'white', fontWeight: 700, fontSize: 18, display: 'flex', alignItems: 'center', gap: 10, boxShadow: '0 2px 8px rgba(220,38,38,0.3)' }}>
                             {ICN.heart} Gr. sanguin : A+
                         </div>
-                        <div style={{ padding: '10px 20px', borderRadius: 'var(--radius-lg)', background: '#dc2626', color: 'white', fontWeight: 700, fontSize: 18, display: 'flex', alignItems: 'center', gap: 10, boxShadow: '0 4px 12px rgba(220,38,38,0.4)', animation: 'pulse 2s ease infinite', animationDelay: '0.3s' }}>
+                        <div style={{ padding: '10px 20px', borderRadius: 'var(--radius-lg)', background: '#dc2626', color: 'white', fontWeight: 700, fontSize: 18, display: 'flex', alignItems: 'center', gap: 10, boxShadow: '0 2px 8px rgba(220,38,38,0.3)' }}>
                             {ICN.warn} Allergies : Penicilline, Sulfamides
                         </div>
                     </div>
@@ -434,8 +434,8 @@ Genere par Alwarid — Outil d'aide a la decision`}</pre>
 
                         {/* Interactions */}
                         <div style={{ animation: 'fadeInUp 0.4s ease both' }}>
-                            <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8, color: 'var(--severity-critical)' }}>
-                                {ICN.warn} Interactions medicamenteuses critiques
+                            <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8, color: 'var(--text-primary)' }}>
+                                <span style={{ color: 'var(--severity-critical)' }}>{ICN.warn}</span> Interactions medicamenteuses critiques
                             </h2>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                                 {patient.interactions.map((inter, i) => (
@@ -469,7 +469,7 @@ Genere par Alwarid — Outil d'aide a la decision`}</pre>
 
                         {/* Vitals */}
                         <div className="card" style={{ animation: 'fadeInUp 0.7s ease both' }}>
-                            <div className="card-header"><h3 style={{ fontSize: 14, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}><span style={{ color: 'var(--severity-critical)' }}>{ICN.ecg}</span> Indicateurs vitaux</h3></div>
+                            <div className="card-header"><h3 style={{ fontSize: 14, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}><span style={{ color: 'var(--text-muted)' }}>{ICN.ecg}</span> Indicateurs vitaux</h3></div>
                             <div className="card-body">
                                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 12 }}>
                                     {[
@@ -544,7 +544,7 @@ Genere par Alwarid — Outil d'aide a la decision`}</pre>
                             <Suspense fallback={<div className="skeleton" style={{ width: '100%', height: '100%' }} />}>
                                 <BodyViewer3D onRegionSelect={setSelectedRegion} regions={patient.bodyRegions} />
                             </Suspense>
-                            <div style={{ position: 'absolute', top: 12, left: 12, padding: '6px 12px', background: 'rgba(220,38,38,0.9)', color: 'white', borderRadius: 'var(--radius-md)', fontSize: 11, fontWeight: 600, letterSpacing: '.5px', textTransform: 'uppercase', backdropFilter: 'blur(6px)' }}>Mode urgence — Cliquez sur une zone</div>
+                            <div style={{ position: 'absolute', top: 12, left: 12, padding: '6px 12px', background: 'rgba(30,41,59,0.85)', color: 'white', borderRadius: 'var(--radius-md)', fontSize: 11, fontWeight: 600, letterSpacing: '.5px', textTransform: 'uppercase', backdropFilter: 'blur(6px)' }}>Mode urgence — Cliquez sur une zone</div>
                         </div>
 
                         {/* Region Detail */}
@@ -568,7 +568,7 @@ Genere par Alwarid — Outil d'aide a la decision`}</pre>
                         <div className="card" style={{ animation: 'fadeInUp 0.6s ease both' }}>
                             <div className="card-body" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0 }}>
                                 <div style={{ padding: 20, borderRight: '1px solid var(--border-subtle)' }}>
-                                    <div style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.5px', color: 'var(--severity-critical)', marginBottom: 8 }}>Contact urgence</div>
+                                    <div style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.5px', color: 'var(--text-muted)', marginBottom: 8 }}>Contact urgence</div>
                                     <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 4 }}>{patient.emergencyContact}</div>
                                     <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>Personne a contacter en cas d'urgence</div>
                                 </div>
