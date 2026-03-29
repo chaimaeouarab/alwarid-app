@@ -1,6 +1,6 @@
 'use client';
 import RoleSelector from '@/components/RoleSelector';
 
-export default function HomePage() {
+export default function RolePage() {
   return <RoleSelector />;
 }

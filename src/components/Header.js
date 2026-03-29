@@ -8,10 +8,10 @@ export default function Header({ showMode, modeName, mode, patientName, patientI
 
     return (
         <header className="app-header">
-            <Link href="/" className="app-logo" style={{ textDecoration: 'none' }}>
+            <Link href="/role" className="app-logo" style={{ textDecoration: 'none' }}>
                 <div style={{ position: 'relative', width: 220, height: 120 }}>
                     <Image
-                        src="/logo.png"
+                        src="/logo-official-nobg.png"
                         alt="Alwarid"
                         fill
                         priority

@@ -1,0 +1,1040 @@
+/* ═══════════════════════════════════════════════════════════
+   RoleSelector — Élégant et Professionnel
+   ═══════════════════════════════════════════════════════════ */
+
+.container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:
+    radial-gradient(1200px 440px at -10% -12%, rgba(42, 125, 225, 0.18), transparent 70%),
+    radial-gradient(900px 360px at 110% 8%, rgba(14, 165, 233, 0.16), transparent 72%),
+    linear-gradient(180deg, #ffffff 0%, #f6faff 56%, #eef5ff 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 12s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Background Orbs */
+.background {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.movingBackdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.floatShape {
+  position: absolute;
+  border-radius: 40%;
+  opacity: 0.45;
+  filter: blur(1px);
+  will-change: transform, opacity;
+  animation: driftShape 18s ease-in-out infinite;
+}
+
+.shapeOne {
+  width: 240px;
+  height: 240px;
+  top: 8%;
+  left: 6%;
+  background: radial-gradient(circle at 30% 30%, rgba(56, 189, 248, 0.8), rgba(37, 99, 235, 0.1));
+  animation-duration: 20s;
+}
+
+.shapeTwo {
+  width: 320px;
+  height: 320px;
+  top: 18%;
+  right: 5%;
+  background: radial-gradient(circle at 70% 30%, rgba(125, 211, 252, 0.7), rgba(14, 165, 233, 0.12));
+  animation-duration: 24s;
+  animation-delay: 2.5s;
+}
+
+.shapeThree {
+  width: 260px;
+  height: 260px;
+  bottom: 6%;
+  left: 18%;
+  background: radial-gradient(circle at 30% 70%, rgba(96, 165, 250, 0.8), rgba(30, 64, 175, 0.1));
+  animation-duration: 19s;
+  animation-delay: 1.25s;
+}
+
+.shapeFour {
+  width: 220px;
+  height: 220px;
+  bottom: 10%;
+  right: 14%;
+  background: radial-gradient(circle at 70% 70%, rgba(34, 211, 238, 0.7), rgba(14, 116, 144, 0.1));
+  animation-duration: 22s;
+  animation-delay: 4s;
+}
+
+.scanBeam {
+  position: absolute;
+  inset: -20% -40%;
+  background: linear-gradient(
+    110deg,
+    transparent 35%,
+    rgba(125, 211, 252, 0.18) 48%,
+    rgba(125, 211, 252, 0.32) 50%,
+    rgba(125, 211, 252, 0.18) 52%,
+    transparent 65%
+  );
+  animation: sweepBeam 7s linear infinite;
+}
+
+.waveLayer {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(1200px 240px at 20% 120%, rgba(56, 189, 248, 0.2), transparent 70%),
+    radial-gradient(1000px 220px at 80% -20%, rgba(59, 130, 246, 0.2), transparent 70%);
+  animation: waveShift 12s ease-in-out infinite;
+}
+
+.gridDrift {
+  position: absolute;
+  inset: -25%;
+  background-image:
+    linear-gradient(rgba(191, 219, 254, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(191, 219, 254, 0.12) 1px, transparent 1px);
+  background-size: 52px 52px;
+  -webkit-mask-image: radial-gradient(circle at 50% 45%, rgba(0, 0, 0, 0.95), transparent 70%);
+  mask-image: radial-gradient(circle at 50% 45%, rgba(0, 0, 0, 0.95), transparent 70%);
+  animation: gridDrift 24s linear infinite;
+}
+
+.ringPulse {
+  position: absolute;
+  width: min(76vw, 860px);
+  aspect-ratio: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid rgba(125, 211, 252, 0.4);
+  box-shadow:
+    0 0 0 28px rgba(125, 211, 252, 0.09),
+    0 0 0 72px rgba(59, 130, 246, 0.06),
+    0 0 100px rgba(56, 189, 248, 0.2) inset;
+  animation: ringPulse 9s ease-in-out infinite;
+}
+
+.particlesLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(186, 230, 253, 0.9) 0%, rgba(56, 189, 248, 0.15) 70%);
+  box-shadow: 0 0 18px rgba(125, 211, 252, 0.35);
+  animation: particleFloat 14s ease-in-out infinite;
+}
+
+.particle:nth-child(1) {
+  top: 15%;
+  left: 12%;
+  animation-delay: 0s;
+}
+
+.particle:nth-child(2) {
+  top: 25%;
+  left: 82%;
+  animation-delay: 2s;
+}
+
+.particle:nth-child(3) {
+  top: 62%;
+  left: 18%;
+  animation-delay: 4s;
+}
+
+.particle:nth-child(4) {
+  top: 75%;
+  left: 73%;
+  animation-delay: 1.5s;
+}
+
+.particle:nth-child(5) {
+  top: 48%;
+  left: 88%;
+  animation-delay: 6s;
+}
+
+.particle:nth-child(6) {
+  top: 82%;
+  left: 36%;
+  animation-delay: 3.5s;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(42px);
+  opacity: 0.34;
+  will-change: transform;
+  animation: float 20s ease-in-out infinite;
+  animation-delay: var(--orb-delay);
+}
+
+.orbOne {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, #3b82f6, #1e40af);
+  top: -10%;
+  left: -5%;
+}
+
+.orbTwo {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, #0ea5e9, #1e40af);
+  top: 30%;
+  right: -10%;
+}
+
+.orbThree {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, #06b6d4, #1e40af);
+  bottom: -5%;
+  left: 10%;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  25% {
+    transform: translateY(-24px) translateX(24px);
+  }
+  50% {
+    transform: translateY(-40px) translateX(-18px);
+  }
+  75% {
+    transform: translateY(-18px) translateX(-34px);
+  }
+}
+
+@keyframes gridDrift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-52px, -52px, 0);
+  }
+}
+
+@keyframes ringPulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(0.95);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+    opacity: 0.95;
+  }
+}
+
+@keyframes particleFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(0.9);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate3d(0, -28px, 0) scale(1.15);
+    opacity: 1;
+  }
+}
+
+@keyframes driftShape {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translate3d(30px, -24px, 0) rotate(4deg) scale(1.06);
+  }
+  50% {
+    transform: translate3d(-20px, -44px, 0) rotate(-3deg) scale(0.94);
+  }
+  75% {
+    transform: translate3d(-36px, -12px, 0) rotate(2deg) scale(1.03);
+  }
+}
+
+@keyframes sweepBeam {
+  0% {
+    transform: translateX(-35%) rotate(-1deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(35%) rotate(1deg);
+    opacity: 0;
+  }
+}
+
+@keyframes waveShift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -16px, 0);
+  }
+}
+
+/* Content */
+.content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1200px;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+  animation: fadeInDown 0.45s ease-out;
+}
+
+.logoWrap {
+  position: relative;
+  width: min(94vw, 700px);
+  height: clamp(150px, 26vw, 270px);
+  margin: 0 auto 22px;
+  filter: drop-shadow(0 14px 36px rgba(2, 6, 23, 0.45));
+  animation: logoFloat 5.5s ease-in-out infinite;
+}
+
+.logoButton {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.logoImage {
+  object-fit: contain;
+  object-position: center;
+}
+
+.title {
+  margin: 0 0 12px;
+  font-size: clamp(32px, 4.4vw, 50px);
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+  text-shadow: 0 8px 28px rgba(15, 23, 42, 0.52);
+}
+
+.subtitle {
+  font-size: clamp(15px, 1.7vw, 19px);
+  color: #365170;
+  margin: 0;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* Roles Container */
+.rolesContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 40px;
+  width: 100%;
+  max-width: 900px;
+  animation: fadeInUp 0.55s ease-out;
+  position: relative;
+  align-items: center;
+  justify-items: center;
+  transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+.rolesContainerSelected {
+  max-width: 980px;
+  min-height: 470px;
+  grid-template-columns: repeat(2, minmax(320px, 430px));
+  gap: 34px;
+  justify-content: center;
+}
+
+.patientFlow {
+  justify-content: center;
+}
+
+.doctorFlow {
+  justify-content: center;
+}
+
+/* Role Card */
+.roleCard {
+  position: relative;
+  height: 420px;
+  width: 100%;
+  max-width: 430px;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: transform 0.26s ease, box-shadow 0.26s ease, border-color 0.26s ease;
+  transform: translateY(0);
+  will-change: transform;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  background: #2a7de1;
+  box-shadow: 0 22px 44px rgba(15, 23, 42, 0.28);
+  z-index: 2;
+}
+
+.roleCard:hover {
+  transform: translateY(-10px);
+  border-color: rgba(240, 253, 250, 0.3);
+  box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.3),
+    0 0 60px rgba(59, 130, 246, 0.2);
+}
+
+.roleCard.selected {
+  background: linear-gradient(135deg, #2a7de1 0%, #1c5fb2 100%);
+  transform: translateX(0) scale(1);
+  box-shadow: 0 28px 52px rgba(42, 125, 225, 0.38);
+}
+
+.exitingDoctor,
+.exitingPatient {
+  pointer-events: none;
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  position: absolute;
+  top: 0;
+  width: min(100%, 430px);
+  z-index: 1;
+}
+
+.patientFlow .exitingDoctor {
+  right: 0;
+}
+
+.doctorFlow .exitingPatient {
+  left: 0;
+}
+
+.doctorFlow .authCard {
+  order: 1;
+}
+
+.doctorFlow .doctorCard.selected {
+  order: 2;
+}
+
+.patientFlow .patientCard.selected {
+  order: 1;
+}
+
+.patientFlow .authCard {
+  order: 2;
+}
+
+.exitingDoctor {
+  animation: hideDoctor 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+}
+
+.exitingPatient {
+  animation: hidePatient 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+}
+
+@keyframes hideDoctor {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  40% {
+    opacity: 0.72;
+    transform: translateX(-42px) scale(0.95);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-98px) scale(0.9);
+  }
+}
+
+@keyframes hidePatient {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  40% {
+    opacity: 0.72;
+    transform: translateX(42px) scale(0.95);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(98px) scale(0.9);
+  }
+}
+
+/* Card Background Gradient */
+.cardBackground {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(41, 162, 221, 0.88) 0%, rgba(27, 121, 167, 0.64) 100%);
+  border-radius: 24px;
+}
+
+/* Patient Card Styling */
+.patientCard {
+  background: linear-gradient(135deg, #4ab7ea 0%, #29a2dd 50%, #1b79a7 100%);
+}
+
+.patientCard:hover .cardBackground {
+  background: linear-gradient(135deg, rgba(74, 183, 234, 0.9) 0%, rgba(41, 162, 221, 0.7) 100%);
+}
+
+/* Doctor Card Styling */
+.doctorCard {
+  background: linear-gradient(135deg, #57bdea 0%, #29a2dd 50%, #1b79a7 100%);
+}
+
+.doctorCard:hover .cardBackground {
+  background: linear-gradient(135deg, rgba(87, 189, 234, 0.9) 0%, rgba(41, 162, 221, 0.7) 100%);
+}
+
+/* Card Content */
+.cardContent {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  color: white;
+}
+
+/* Icon */
+.icon {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 40px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+  margin-bottom: 20px;
+}
+
+.patientIcon {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(34, 197, 232, 0.1));
+  border-color: rgba(59, 130, 246, 0.3);
+  color: #ffffff;
+}
+
+.doctorIcon {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(14, 165, 233, 0.1));
+  border-color: rgba(59, 130, 246, 0.3);
+  color: #ffffff;
+}
+
+.roleCard:hover .icon {
+  transform: translateY(-6px) scale(1.06);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 15px 35px rgba(59, 130, 246, 0.2);
+}
+
+.icon svg {
+  width: 45px;
+  height: 45px;
+  stroke-width: 1.5;
+}
+
+/* Role Title */
+.roleTitle {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 15px 0 10px 0;
+  letter-spacing: -0.5px;
+  transition: all 0.4s ease-out;
+}
+
+/* Role Description */
+.roleDescription {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0;
+  line-height: 1.6;
+  font-weight: 400;
+  transition: all 0.4s ease-out;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.roleCard:hover .roleDescription {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* CTA Button */
+.cta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 12px 24px;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  transition: transform 0.22s ease, background-color 0.22s ease, border-color 0.22s ease;
+  cursor: pointer;
+  margin-top: 10px;
+  font-family: inherit;
+}
+
+.roleCard:hover .cta {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateX(3px);
+}
+
+.cta:focus-visible,
+.loginBtn:focus-visible,
+.authInput:focus-visible {
+  outline: 2px solid #bfdbfe;
+  outline-offset: 2px;
+}
+
+.authCard {
+  width: min(100%, 430px);
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid #e5eefb;
+  box-shadow:
+    0 22px 46px rgba(15, 23, 42, 0.22),
+    0 2px 0 rgba(255, 255, 255, 0.6) inset;
+  padding: 24px;
+  display: grid;
+  gap: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(42px) scale(0.96);
+  transition: transform 0.28s ease-out, opacity 0.24s ease-out;
+}
+
+.authCardVisible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0) scale(1);
+}
+
+.doctorFlow .authCard {
+  transform: translateX(-42px) scale(0.96);
+}
+
+.doctorFlow .authCardVisible,
+.patientFlow .authCardVisible {
+  transform: translateX(0) scale(1);
+}
+
+.authTitle {
+  margin: 0;
+  color: #0f172a;
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.authSubtitle {
+  margin: 0 0 4px;
+  color: #475569;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.inputLabel {
+  display: grid;
+  gap: 8px;
+  color: #1e293b;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.authInput {
+  width: 100%;
+  border: 1px solid #cbdff9;
+  background: #f8fbff;
+  border-radius: 12px;
+  color: #0f172a;
+  padding: 11px 12px;
+  font-size: 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.authInput:focus {
+  border-color: #2a7de1;
+  box-shadow: 0 0 0 3px rgba(42, 125, 225, 0.2);
+}
+
+.loginBtn {
+  margin-top: 8px;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #2a7de1 0%, #1c5fb2 100%);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 12px 14px;
+  box-shadow: 0 12px 24px rgba(42, 125, 225, 0.32);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.loginBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 28px rgba(42, 125, 225, 0.36);
+}
+
+.loginBtn:disabled {
+  opacity: 0.8;
+  cursor: default;
+}
+
+.cta svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
+}
+
+.roleCard:hover .cta svg {
+  transform: translateX(4px);
+}
+
+/* Shimmer Effect */
+.shimmer {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  animation: shimmerEffect 3s infinite;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.roleCard:hover .shimmer {
+  opacity: 1;
+}
+
+@keyframes shimmerEffect {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  animation: fadeInUp 1.2s ease-out;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes logoFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    min-height: 100vh;
+  }
+
+  .gridDrift {
+    background-size: 42px 42px;
+  }
+
+  .ringPulse {
+    width: 92vw;
+  }
+
+  .floatShape {
+    opacity: 0.36;
+  }
+
+  .particle {
+    width: 6px;
+    height: 6px;
+  }
+
+  .content {
+    gap: 40px;
+    padding: 30px 16px;
+  }
+
+  .title {
+    font-size: 31px;
+  }
+
+  .logoWrap {
+    width: min(96vw, 560px);
+    height: clamp(120px, 28vw, 205px);
+  }
+
+  .rolesContainer {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .rolesContainerSelected {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .roleCard {
+    height: 380px;
+  }
+
+  .authCard {
+    width: 100%;
+    transform: translateY(24px) scale(0.96);
+  }
+
+  .authCardVisible {
+    transform: translateY(0) scale(1);
+  }
+
+  .exitingDoctor,
+  .exitingPatient {
+    display: none;
+  }
+
+  .cardContent {
+    padding: 30px 24px;
+  }
+
+  .icon {
+    width: 70px;
+    height: 70px;
+  }
+
+  .icon svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .roleTitle {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 26px;
+  }
+
+
+  .logoWrap {
+    width: 96vw;
+    height: clamp(110px, 30vw, 170px);
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
+
+  .roleCard {
+    height: 360px;
+  }
+
+  .cardContent {
+    padding: 24px 16px;
+  }
+
+  .icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 12px;
+  }
+
+  .roleTitle {
+    font-size: 20px;
+  }
+
+  .roleDescription {
+    font-size: 13px;
+  }
+}
+
+/* Unified Brand Blue: #29A2DD */
+.container {
+  --brand-blue: #29a2dd;
+  --brand-blue-light: #4ab7ea;
+  --brand-blue-dark: #1b79a7;
+}
+
+.container {
+  background:
+    radial-gradient(1200px 440px at -10% -12%, color-mix(in srgb, var(--brand-blue) 20%, transparent), transparent 70%),
+    radial-gradient(900px 360px at 110% 8%, color-mix(in srgb, var(--brand-blue-light) 18%, transparent), transparent 72%),
+    linear-gradient(180deg, #ffffff 0%, #f6fbff 56%, #edf8ff 100%);
+}
+
+.shapeOne,
+.shapeTwo,
+.shapeThree,
+.shapeFour {
+  background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--brand-blue-light) 88%, white), color-mix(in srgb, var(--brand-blue-dark) 16%, transparent));
+}
+
+.scanBeam {
+  background: linear-gradient(
+    110deg,
+    transparent 35%,
+    color-mix(in srgb, var(--brand-blue-light) 54%, transparent) 48%,
+    color-mix(in srgb, var(--brand-blue) 70%, transparent) 50%,
+    color-mix(in srgb, var(--brand-blue-light) 54%, transparent) 52%,
+    transparent 65%
+  );
+}
+
+.waveLayer {
+  background:
+    radial-gradient(1200px 240px at 20% 120%, color-mix(in srgb, var(--brand-blue) 30%, transparent), transparent 70%),
+    radial-gradient(1000px 220px at 80% -20%, color-mix(in srgb, var(--brand-blue-light) 28%, transparent), transparent 70%);
+}
+
+.gridDrift {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--brand-blue) 30%, white) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--brand-blue) 30%, white) 1px, transparent 1px);
+}
+
+.orbOne,
+.orbTwo,
+.orbThree {
+  background: radial-gradient(circle, var(--brand-blue-light), var(--brand-blue-dark));
+}
+
+.ringPulse {
+  border-color: color-mix(in srgb, var(--brand-blue-light) 50%, white);
+  box-shadow:
+    0 0 0 28px color-mix(in srgb, var(--brand-blue) 14%, transparent),
+    0 0 0 72px color-mix(in srgb, var(--brand-blue) 10%, transparent),
+    0 0 100px color-mix(in srgb, var(--brand-blue-light) 24%, transparent) inset;
+}
+
+.particle {
+  background: radial-gradient(circle, color-mix(in srgb, var(--brand-blue-light) 92%, white) 0%, color-mix(in srgb, var(--brand-blue) 18%, transparent) 70%);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--brand-blue) 34%, transparent);
+}
+
+.roleCard,
+.patientCard,
+.doctorCard,
+.roleCard.selected,
+.cardBackground {
+  background: linear-gradient(135deg, var(--brand-blue-light) 0%, var(--brand-blue) 50%, var(--brand-blue-dark) 100%);
+}
+
+.patientIcon,
+.doctorIcon,
+.icon {
+  color: #ffffff;
+  border-color: color-mix(in srgb, white 72%, var(--brand-blue));
+}
+
+.authInput:focus {
+  border-color: var(--brand-blue);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-blue) 24%, transparent);
+}
+
+.loginBtn {
+  background: linear-gradient(180deg, var(--brand-blue-light) 0%, var(--brand-blue) 55%, var(--brand-blue-dark) 100%);
+  box-shadow: 0 12px 24px color-mix(in srgb, var(--brand-blue) 36%, transparent);
+}

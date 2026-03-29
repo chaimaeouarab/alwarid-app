@@ -30,7 +30,15 @@ Open http://localhost:3000
 ## API Routes
 
 - `/api/ai` streams Mistral responses (requires `MISTRAL_API_KEY` in `.env.local`)
+- `/api/patient-ai` patient chat endpoint backed by Mistral using filtered patient context
 - `/api/ecg` ECG inference endpoint with offline fallback when Flask API is unavailable
+
+## Environment Variables
+
+Create `.env.local` from `.env.example` and set:
+
+- `MISTRAL_API_KEY` your private Mistral key
+- `MISTRAL_MODEL` optional, default is `mistral-small-latest`
 
 ## Quality Check
 
