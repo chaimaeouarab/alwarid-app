@@ -35,9 +35,9 @@ export default function ModePage() {
     const router = useRouter();
 
     return (
-        <>
+        <div className="app-shell">
             <Header showBackToSearch />
-            <main className="fade-in-up" style={{ maxWidth: 880, margin: '0 auto', padding: '40px 24px' }}>
+            <main className="app-main fade-in-up" style={{ maxWidth: 880, margin: '0 auto', padding: '40px 24px' }}>
                 <div style={{ textAlign: 'center', marginBottom: 32 }}>
                     <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 8 }}>Selection du mode</h1>
                     <p style={{ fontSize: 14, color: 'var(--text-secondary)' }}>Choisissez le contexte de consultation pour adapter l&apos;interface</p>
@@ -91,8 +91,8 @@ export default function ModePage() {
                 </div>
             </main>
             <footer className="page-footer">
-                Alwarid v2.0 — Outil d&apos;aide a la decision — La decision revient au medecin traitant — Conformite Loi 09-08 (CNDP)
+                © 2026 Alwarid. All rights reserved.
             </footer>
-        </>
+        </div>
     );
 }

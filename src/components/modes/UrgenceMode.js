@@ -3,6 +3,7 @@
 import { useState, Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import ReactMarkdown from 'react-markdown';
 import { MOCK_PATIENTS, HISTORY_TYPES, formatDate } from '@/data/mockData';
 
 const BodyViewer3D = dynamic(() => import('@/components/BodyViewer3D').then(m => ({ default: m.BodyViewer3D })), { ssr: false });
@@ -200,15 +201,15 @@ function UrgenceChatbot() {
 
     const generateLocalResponse = (q) => {
         if (q.toLowerCase().includes('resume') || q.toLowerCase().includes('critique')) {
-            return `RESUME CRITIQUE — ${patient.firstName} ${patient.lastName}\n\nPatient de ${patient.age} ans, ${patient.sex}\nGroupe sanguin: ${patient.bloodType}\n\nALLERGIES MAJEURES:\n${patient.allergies.map(a => `  - ${a}`).join('\n')}\n\nPATHOLOGIES ACTIVES:\n${patient.conditions.map(c => `  - ${c.name} (${c.severity}) — ${c.details}`).join('\n')}\n\nINTERACTIONS CRITIQUES:\n${patient.interactions.map(i => `  - ${i.drugs.join(' + ')}: ${i.risk}`).join('\n')}\n\nMEDICAMENTS EN COURS: ${patient.medications.length}\nContact urgence: ${patient.emergencyContact}\n\n[Aide a la decision — La decision finale revient au medecin traitant]`;
+            return `## Résumé critique — ${patient.firstName} ${patient.lastName}\n\nPatient de **${patient.age} ans**, ${patient.sex} — Groupe sanguin : \`${patient.bloodType}\`\n\n### Allergies majeures\n${patient.allergies.map(a => `- **${a}**`).join('\n')}\n\n### Pathologies actives\n${patient.conditions.map(c => `- ${c.name} *(${c.severity})* — ${c.details}`).join('\n')}\n\n### Interactions critiques\n${patient.interactions.map(i => `- **${i.drugs.join(' + ')}** : ${i.risk}`).join('\n')}\n\n**Médicaments en cours :** ${patient.medications.length}  \n**Contact urgence :** ${patient.emergencyContact}\n\n> Aide à la décision — La décision finale revient au médecin traitant`;
         } else if (q.toLowerCase().includes('allergi') || q.toLowerCase().includes('contre-indication')) {
-            return `ALLERGIES CONNUES:\n${patient.allergies.map(a => `  - ${a}`).join('\n')}\n\nCONTRE-INDICATIONS ABSOLUES:\n  - Penicilline et derives (amoxicilline, ampicilline)\n  - Sulfamides et derives\n  - Attention cephalosporines (allergie croisee ~10%)\n\nMEDICAMENTS A EVITER:\n  - Ibuprofene (interaction Amlodipine)\n  - Gliclazide pendant Ramadan (risque hypo x7.5)\n\n[Aide a la decision — La decision finale revient au medecin traitant]`;
+            return `## Allergies connues\n${patient.allergies.map(a => `- **${a}**`).join('\n')}\n\n## Contre-indications absolues\n- **Pénicilline** et dérivés (amoxicilline, ampicilline)\n- **Sulfamides** et dérivés\n- Attention céphalosporines (allergie croisée ~10%)\n\n## Médicaments à éviter\n- Ibuprofène (interaction Amlodipine)\n- Gliclazide pendant Ramadan (risque hypo x7.5)\n\n> Aide à la décision — La décision finale revient au médecin traitant`;
         } else if (q.toLowerCase().includes('interaction')) {
-            return `INTERACTIONS MEDICAMENTEUSES:\n\n${patient.interactions.map(i => `[${i.severity.toUpperCase()}] ${i.drugs.join(' + ')}\n  Risque: ${i.risk}\n  Source: ${i.source}`).join('\n\n')}\n\n[Aide a la decision — La decision finale revient au medecin traitant]`;
+            return `## Interactions médicamenteuses\n\n${patient.interactions.map(i => `### [${i.severity.toUpperCase()}] ${i.drugs.join(' + ')}\n- **Risque :** ${i.risk}\n- **Source :** ${i.source}`).join('\n\n')}\n\n> Aide à la décision — La décision finale revient au médecin traitant`;
         } else if (q.toLowerCase().includes('protocole') || q.toLowerCase().includes('hta')) {
-            return `PROTOCOLE HTA URGENTE\n\n1. TA connue: 155/95 mmHg\n2. Traitement: Amlodipine 10mg, Bisoprolol 5mg\n3. ATTENTION: Interaction→bradycardie\n4. Surveiller FC (ne pas descendre sous 50 bpm)\n5. Si TA >180/120: Nicardipine IV\n6. ECG de controle recommande\n7. Allergies: Penicilline, Sulfamides\n\n[Aide a la decision — La decision finale revient au medecin traitant]`;
+            return `## Protocole HTA urgente\n\n1. TA connue : \`155/95 mmHg\`\n2. Traitement : **Amlodipine 10mg**, **Bisoprolol 5mg**\n3. **Attention :** Interaction → bradycardie\n4. Surveiller FC (ne pas descendre sous \`50 bpm\`)\n5. Si TA > \`180/120\` : Nicardipine IV\n6. ECG de contrôle recommandé\n7. Allergies : **Pénicilline**, **Sulfamides**\n\n> Aide à la décision — La décision finale revient au médecin traitant`;
         }
-        return `Dossier de ${patient.firstName} ${patient.lastName}:\n- ${patient.conditions.length} pathologies actives\n- ${patient.medications.length} medicaments\n- ${patient.interactions.length} interactions\n- Allergies: ${patient.allergies.join(', ')}\n\n[Aide a la decision — La decision finale revient au medecin traitant]`;
+        return `## Dossier de ${patient.firstName} ${patient.lastName}\n\n- **${patient.conditions.length}** pathologies actives\n- **${patient.medications.length}** médicaments\n- **${patient.interactions.length}** interactions\n- Allergies : ${patient.allergies.join(', ')}\n\n> Aide à la décision — La décision finale revient au médecin traitant`;
     };
 
     return (
@@ -231,15 +232,26 @@ function UrgenceChatbot() {
                         background: msg.role === 'user' ? 'var(--primary-600)' : msg.role === 'system' ? 'var(--severity-info-bg)' : 'var(--neutral-100)',
                         color: msg.role === 'user' ? 'white' : 'var(--text-secondary)',
                         border: msg.role === 'system' ? '1px solid var(--severity-info-border)' : 'none',
-                        fontSize: 12, lineHeight: 1.5, whiteSpace: 'pre-wrap',
-                        fontFamily: msg.role === 'ai' ? "'IBM Plex Mono', monospace" : 'inherit'
+                        fontSize: 12, lineHeight: 1.5,
                     }}>
-                        {msg.text}
+                        {msg.role === 'ai' ? (
+                            <div className="markdown-body markdown-sm">
+                                <ReactMarkdown>{msg.text}</ReactMarkdown>
+                            </div>
+                        ) : (
+                            msg.text
+                        )}
                     </div>
                 ))}
                 {isTyping && (
-                    <div style={{ alignSelf: 'flex-start', padding: '8px 16px', background: 'var(--neutral-100)', borderRadius: '12px 12px 12px 2px', fontSize: 12, color: 'var(--text-secondary)', whiteSpace: 'pre-wrap', fontFamily: "'IBM Plex Mono', monospace", maxWidth: '85%' }}>
-                        {streamingText || <span style={{ animation: 'pulse 1s ease infinite', color: 'var(--text-muted)' }}>Analyse en cours...</span>}
+                    <div style={{ alignSelf: 'flex-start', padding: '8px 16px', background: 'var(--neutral-100)', borderRadius: '12px 12px 12px 2px', fontSize: 12, color: 'var(--text-secondary)', maxWidth: '85%' }}>
+                        {streamingText
+                            ? (
+                                <div className="markdown-body markdown-sm">
+                                    <ReactMarkdown>{streamingText}</ReactMarkdown>
+                                </div>
+                            )
+                            : <span style={{ animation: 'pulse 1s ease infinite', color: 'var(--text-muted)' }}>Analyse en cours...</span>}
                     </div>
                 )}
             </div>
@@ -315,7 +327,7 @@ export default function UrgenceMode() {
             {/* PROTOCOLE RAPIDE MODAL */}
             {showProtocole && (
                 <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)' }} onClick={() => setShowProtocole(false)}>
-                    <div className="card fade-in" style={{ width: 650, maxHeight: '80vh', overflow: 'auto' }} onClick={e => e.stopPropagation()}>
+                    <div className="card fade-in" style={{ width: 'min(650px, 92vw)', maxHeight: '80vh', overflow: 'auto', margin: '0 12px' }} onClick={e => e.stopPropagation()}>
                         <div className="card-header" style={{ position: 'sticky', top: 0, background: 'var(--bg-card)', zIndex: 1 }}>
                             <h3 style={{ fontSize: 16, fontWeight: 700, color: 'var(--severity-critical)' }}>Protocole Rapide</h3>
                             <button className="btn btn-ghost btn-icon" onClick={() => setShowProtocole(false)}><svg style={{ width: 18, height: 18 }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg></button>
@@ -362,7 +374,7 @@ Genere par Alwarid — Outil d'aide a la decision`}</pre>
             {/* SCAN IMAGE LIGHTBOX */}
             {viewingScan && (
                 <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 1001, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)' }} onClick={() => setViewingScan(null)}>
-                    <div className="fade-in" style={{ maxWidth: 700, width: '90%', background: 'var(--bg-card)', borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: '0 25px 50px rgba(0,0,0,0.5)' }} onClick={e => e.stopPropagation()}>
+                    <div className="fade-in" style={{ width: 'min(680px, 92vw)', background: 'var(--bg-card)', borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: '0 25px 50px rgba(0,0,0,0.5)' }} onClick={e => e.stopPropagation()}>
                         <div style={{ background: '#111', position: 'relative', width: '100%', height: '60vh', maxHeight: '60vh' }}>
                             <Image
                                 src={viewingScan.image}
@@ -394,17 +406,16 @@ Genere par Alwarid — Outil d'aide a la decision`}</pre>
 
             {/* CRITICAL BANNER */}
             <div style={{
-                background: 'linear-gradient(135deg, #fef2f2 0%, #fff1f2 100%)',
-                borderBottom: '2px solid var(--severity-critical-border)',
+                background: 'var(--bg-card)',
+                borderBottom: '1px solid var(--border-default)',
                 padding: '16px 24px', animation: 'fadeInUp 0.3s ease both'
             }}>
-                <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
+                <div style={{ maxWidth: 1120, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap', justifyContent: 'center' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
                         <div style={{
-                            width: 56, height: 56, borderRadius: 'var(--radius-lg)',
-                            background: 'linear-gradient(135deg, var(--severity-critical) 0%, #991b1b 100%)',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            fontWeight: 700, fontSize: 20, color: 'white', boxShadow: '0 4px 12px rgba(220,38,38,0.3)'
+                            width: 56, height: 56, borderRadius: 'var(--radius-md)', background: 'var(--primary-50)',
+                            color: 'var(--primary-700)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            fontWeight: 700, fontSize: 20, flexShrink: 0
                         }}>YA</div>
                         <div>
                             <div style={{ fontSize: 20, fontWeight: 700 }}>Youssef El Amrani</div>
@@ -412,10 +423,10 @@ Genere par Alwarid — Outil d'aide a la decision`}</pre>
                         </div>
                     </div>
                     <div style={{ display: 'flex', gap: 12, flex: 1, justifyContent: 'center', flexWrap: 'wrap' }}>
-                        <div style={{ padding: '10px 20px', borderRadius: 'var(--radius-lg)', background: '#dc2626', color: 'white', fontWeight: 700, fontSize: 18, display: 'flex', alignItems: 'center', gap: 10, boxShadow: '0 4px 12px rgba(220,38,38,0.4)', animation: 'pulse 2s ease infinite' }}>
+                        <div style={{ padding: '10px 20px', borderRadius: 'var(--radius-lg)', background: '#dc2626', color: 'white', fontWeight: 700, fontSize: 18, display: 'flex', alignItems: 'center', gap: 10, boxShadow: '0 2px 8px rgba(220,38,38,0.3)' }}>
                             {ICN.heart} Gr. sanguin : A+
                         </div>
-                        <div style={{ padding: '10px 20px', borderRadius: 'var(--radius-lg)', background: '#dc2626', color: 'white', fontWeight: 700, fontSize: 18, display: 'flex', alignItems: 'center', gap: 10, boxShadow: '0 4px 12px rgba(220,38,38,0.4)', animation: 'pulse 2s ease infinite', animationDelay: '0.3s' }}>
+                        <div style={{ padding: '10px 20px', borderRadius: 'var(--radius-lg)', background: '#dc2626', color: 'white', fontWeight: 700, fontSize: 18, display: 'flex', alignItems: 'center', gap: 10, boxShadow: '0 2px 8px rgba(220,38,38,0.3)' }}>
                             {ICN.warn} Allergies : Penicilline, Sulfamides
                         </div>
                     </div>
@@ -426,16 +437,16 @@ Genere par Alwarid — Outil d'aide a la decision`}</pre>
             </div>
 
             {/* MAIN CONTENT */}
-            <div style={{ maxWidth: 1400, margin: '0 auto', padding: 24 }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+            <div style={{ maxWidth: 1120, margin: '0 auto', padding: '20px 16px 28px' }}>
+                <div className="urgence-main-grid">
 
                     {/* LEFT COLUMN */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
 
                         {/* Interactions */}
                         <div style={{ animation: 'fadeInUp 0.4s ease both' }}>
-                            <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8, color: 'var(--severity-critical)' }}>
-                                {ICN.warn} Interactions medicamenteuses critiques
+                            <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8, color: 'var(--text-primary)' }}>
+                                <span style={{ color: 'var(--severity-critical)' }}>{ICN.warn}</span> Interactions medicamenteuses critiques
                             </h2>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                                 {patient.interactions.map((inter, i) => (
@@ -468,10 +479,10 @@ Genere par Alwarid — Outil d'aide a la decision`}</pre>
                         </div>
 
                         {/* Vitals */}
-                        <div className="card" style={{ animation: 'fadeInUp 0.7s ease both' }}>
-                            <div className="card-header"><h3 style={{ fontSize: 14, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}><span style={{ color: 'var(--severity-critical)' }}>{ICN.ecg}</span> Indicateurs vitaux</h3></div>
-                            <div className="card-body">
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 12 }}>
+                        <div className="card" style={{ animation: 'fadeInUp 0.7s ease both', height: '100%', display: 'flex', flexDirection: 'column' }}>
+                            <div className="card-header"><h3 style={{ fontSize: 14, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}><span style={{ color: 'var(--text-muted)' }}>{ICN.ecg}</span> Indicateurs vitaux</h3></div>
+                            <div className="card-body" style={{ flex: 1 }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: 10 }}>
                                     {[
                                         { key: 'ta_sys', label: 'TA Sys', unit: 'mmHg', placeholder: '120' },
                                         { key: 'ta_dia', label: 'TA Dia', unit: 'mmHg', placeholder: '80' },
@@ -503,8 +514,40 @@ Genere par Alwarid — Outil d'aide a la decision`}</pre>
                             )}
                         </div>
 
+                    </div>
+
+                        {/* RIGHT COLUMN: 3D */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                        {/* 3D Viewer */}
+                        <div style={{
+                            background: 'linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%)',
+                            borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-default)',
+                            height: 300, position: 'relative', overflow: 'hidden', animation: 'fadeInUp 0.4s ease both'
+                        }}>
+                            <Suspense fallback={<div className="skeleton" style={{ width: '100%', height: '100%' }} />}>
+                                <BodyViewer3D onRegionSelect={setSelectedRegion} regions={patient.bodyRegions} />
+                            </Suspense>
+                            <div style={{ position: 'absolute', top: 12, left: 12, padding: '6px 12px', background: 'rgba(30,41,59,0.85)', color: 'white', borderRadius: 'var(--radius-md)', fontSize: 11, fontWeight: 600, letterSpacing: '.5px', textTransform: 'uppercase', backdropFilter: 'blur(6px)' }}>Mode urgence — Cliquez sur une zone</div>
+                        </div>
+
+                        {/* Region Detail */}
+                        <div className="card" style={{ animation: 'fadeInUp 0.5s ease both' }}>
+                            <div className="card-header"><h3 style={{ fontSize: 14, fontWeight: 600 }}>{selectedRegion ? patient.bodyRegions[selectedRegion]?.label || 'Region' : 'Selectionnez une zone anatomique'}</h3></div>
+                            <div className="card-body" style={{ minHeight: 120 }}>
+                                {!selectedRegion && (
+                                    <div className="empty-state" style={{ padding: 20 }}>
+                                        <div style={{ width: 32, height: 32, margin: '0 auto 8px', opacity: 0.3 }}>{ICN.user}</div>
+                                        <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>Cliquez sur le modele 3D pour afficher les details.</p>
+                                    </div>
+                                )}
+                                {selectedRegion && <RegionDetail regionKey={selectedRegion} onViewScan={setViewingScan} />}
+                            </div>
+                        </div>
+
+                        {/* Chat IA deplace vers le popup global (bouton bas droite) */}
+
                         {/* Timeline */}
-                        <div className="card" style={{ animation: 'fadeInUp 0.8s ease both' }}>
+                        <div className="card" style={{ animation: 'fadeInUp 0.8s ease both', height: '100%', display: 'flex', flexDirection: 'column' }}>
                             <div className="card-header">
                                 <h3 style={{ fontSize: 14, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}>Evenements critiques</h3>
                                 <div style={{ display: 'flex', gap: 6 }}>
@@ -512,7 +555,7 @@ Genere par Alwarid — Outil d'aide a la decision`}</pre>
                                     <span className="badge badge-neutral" title="Consultations dentaire, dermato, ophtalmo, ORL, pneumo, rhumato... filtrees">{filteredOut} filtres</span>
                                 </div>
                             </div>
-                            <div style={{ maxHeight: 350, overflowY: 'auto', padding: 16 }}>
+                            <div style={{ maxHeight: 300, overflowY: 'auto', padding: 16, flex: 1 }}>
                                 <div className="timeline">
                                     {urgentHistory.map((entry, i) => {
                                         const typeInfo = HISTORY_TYPES[entry.type] || { label: entry.type, color: 'info' };
@@ -531,44 +574,12 @@ Genere par Alwarid — Outil d'aide a la decision`}</pre>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    {/* RIGHT COLUMN: 3D + Chatbot */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-                        {/* 3D Viewer */}
-                        <div style={{
-                            background: 'linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%)',
-                            borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-default)',
-                            height: 400, position: 'relative', overflow: 'hidden', animation: 'fadeInUp 0.4s ease both'
-                        }}>
-                            <Suspense fallback={<div className="skeleton" style={{ width: '100%', height: '100%' }} />}>
-                                <BodyViewer3D onRegionSelect={setSelectedRegion} regions={patient.bodyRegions} />
-                            </Suspense>
-                            <div style={{ position: 'absolute', top: 12, left: 12, padding: '6px 12px', background: 'rgba(220,38,38,0.9)', color: 'white', borderRadius: 'var(--radius-md)', fontSize: 11, fontWeight: 600, letterSpacing: '.5px', textTransform: 'uppercase', backdropFilter: 'blur(6px)' }}>Mode urgence — Cliquez sur une zone</div>
-                        </div>
-
-                        {/* Region Detail */}
-                        <div className="card" style={{ animation: 'fadeInUp 0.5s ease both' }}>
-                            <div className="card-header"><h3 style={{ fontSize: 14, fontWeight: 600 }}>{selectedRegion ? patient.bodyRegions[selectedRegion]?.label || 'Region' : 'Selectionnez une zone anatomique'}</h3></div>
-                            <div className="card-body">
-                                {!selectedRegion && (
-                                    <div className="empty-state" style={{ padding: 20 }}>
-                                        <div style={{ width: 32, height: 32, margin: '0 auto 8px', opacity: 0.3 }}>{ICN.user}</div>
-                                        <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>Cliquez sur le modele 3D pour afficher les details.</p>
-                                    </div>
-                                )}
-                                {selectedRegion && <RegionDetail regionKey={selectedRegion} onViewScan={setViewingScan} />}
-                            </div>
-                        </div>
-
-                        {/* AI Chatbot */}
-                        <UrgenceChatbot />
 
                         {/* Quick Info */}
                         <div className="card" style={{ animation: 'fadeInUp 0.6s ease both' }}>
-                            <div className="card-body" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0 }}>
+                            <div className="card-body" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 0, minHeight: 140 }}>
                                 <div style={{ padding: 20, borderRight: '1px solid var(--border-subtle)' }}>
-                                    <div style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.5px', color: 'var(--severity-critical)', marginBottom: 8 }}>Contact urgence</div>
+                                    <div style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.5px', color: 'var(--text-muted)', marginBottom: 8 }}>Contact urgence</div>
                                     <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 4 }}>{patient.emergencyContact}</div>
                                     <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>Personne a contacter en cas d'urgence</div>
                                 </div>

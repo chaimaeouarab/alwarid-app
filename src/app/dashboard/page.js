@@ -3,6 +3,7 @@ import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import Header from '@/components/Header';
+import PopupAIChat from '@/components/PopupAIChat';
 
 const UrgenceMode = dynamic(() => import('@/components/modes/UrgenceMode'), { ssr: false, loading: () => <div style={{ padding: 40, textAlign: 'center' }}>Chargement...</div> });
 const ConsultationMode = dynamic(() => import('@/components/modes/ConsultationMode'), { ssr: false, loading: () => <div style={{ padding: 40, textAlign: 'center' }}>Chargement...</div> });
@@ -24,17 +25,21 @@ function DashboardContent() {
     };
 
     return (
-        <>
+        <div className="app-shell">
             <Header showMode modeName={mode} patientName="Youssef El Amrani" patientId="PAT-2024-00147" />
-            {renderMode()}
-        </>
+            <main className="app-main">
+                {renderMode()}
+            </main>
+            <PopupAIChat mode={mode} />
+            <footer className="page-footer">© 2026 Alwarid. All rights reserved.</footer>
+        </div>
     );
 }
 
 export default function DashboardPage() {
     return (
         <Suspense fallback={<div style={{ padding: 40, textAlign: 'center' }}>Chargement...</div>}>
-            <DashboardContent />
+                <DashboardContent />
         </Suspense>
     );
 }

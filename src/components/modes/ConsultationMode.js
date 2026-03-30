@@ -3,6 +3,7 @@
 import { useState, useRef, Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import ReactMarkdown from 'react-markdown';
 import { MOCK_PATIENTS, HISTORY_TYPES, formatDate } from '@/data/mockData';
 
 const BodyViewer3D = dynamic(() => import('@/components/BodyViewer3D').then(m => ({ default: m.BodyViewer3D })), { ssr: false });
@@ -352,6 +353,7 @@ function DocumentsAITab() {
     const [generatedReport, setGeneratedReport] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
     const [displayedReport, setDisplayedReport] = useState('');
+    const [reportEditMode, setReportEditMode] = useState(false);
     const [ecgFile, setEcgFile] = useState(null);
     const [ecgPreview, setEcgPreview] = useState(null);
     const [ecgAnalyzing, setEcgAnalyzing] = useState(false);
@@ -510,11 +512,13 @@ function DocumentsAITab() {
                 }
             }
             setGeneratedReport(fullText);
+            setReportEditMode(false);
             setIsGenerating(false);
         } catch {
             // Fallback: use local templates
             const report = getLocalReport(docType);
             setGeneratedReport(report);
+            setReportEditMode(false);
             typeReport(report);
         }
     };
@@ -917,19 +921,43 @@ function DocumentsAITab() {
 
                                             {/* Editable report content */}
                                             {isGenerating ? (
-                                                <div style={{ padding: 20 }}>
-                                                    <pre style={{ fontSize: 12, lineHeight: 1.6, fontFamily: "'IBM Plex Mono', monospace", whiteSpace: 'pre-wrap', color: 'var(--text-secondary)' }}>{displayedReport}|</pre>
+                                                <div style={{ padding: '20px 24px' }}>
+                                                    <div className="markdown-body markdown-report">
+                                                        <ReactMarkdown>{displayedReport}</ReactMarkdown>
+                                                    </div>
+                                                    <span style={{ display: 'inline-block', width: 2, height: '1em', background: 'var(--primary-600)', marginLeft: 2, animation: 'pulse 0.8s ease infinite', verticalAlign: 'text-bottom' }} />
                                                 </div>
                                             ) : (
-                                                <textarea
-                                                    style={{
-                                                        width: '100%', minHeight: 400, padding: 20, border: 'none', outline: 'none', resize: 'vertical',
-                                                        fontSize: 12, lineHeight: 1.6, fontFamily: "'IBM Plex Mono', monospace",
-                                                        color: 'var(--text-secondary)', background: 'white'
-                                                    }}
-                                                    value={generatedReport}
-                                                    onChange={e => setGeneratedReport(e.target.value)}
-                                                />
+                                                <>
+                                                    {/* Toggle aperçu / modifier */}
+                                                    <div style={{ padding: '8px 20px', borderBottom: '1px solid var(--border-subtle)', display: 'flex', gap: 6 }}>
+                                                        <button
+                                                            className={`btn btn-sm ${!reportEditMode ? 'btn-primary' : 'btn-ghost'}`}
+                                                            onClick={() => setReportEditMode(false)}
+                                                        >Aperçu</button>
+                                                        <button
+                                                            className={`btn btn-sm ${reportEditMode ? 'btn-primary' : 'btn-ghost'}`}
+                                                            onClick={() => setReportEditMode(true)}
+                                                        >Modifier</button>
+                                                    </div>
+                                                    {reportEditMode ? (
+                                                        <textarea
+                                                            style={{
+                                                                width: '100%', minHeight: 400, padding: 20, border: 'none', outline: 'none', resize: 'vertical',
+                                                                fontSize: 13, lineHeight: 1.7, fontFamily: "'IBM Plex Mono', monospace",
+                                                                color: 'var(--text-secondary)', background: 'white'
+                                                            }}
+                                                            value={generatedReport}
+                                                            onChange={e => setGeneratedReport(e.target.value)}
+                                                        />
+                                                    ) : (
+                                                        <div style={{ padding: '20px 24px' }}>
+                                                            <div className="markdown-body markdown-report">
+                                                                <ReactMarkdown>{generatedReport}</ReactMarkdown>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </>
                                             )}
                                         </div>
                                     )}
@@ -1031,99 +1059,37 @@ function OrdonnanceTab() {
 }
 
 function AIAnalysisTab() {
-    const [prompt, setPrompt] = useState('');
-    const [displayedResponse, setDisplayedResponse] = useState('');
-    const [isTyping, setIsTyping] = useState(false);
-    const [usedMistral, setUsedMistral] = useState(false);
-    const examplePrompts = ['Resume complet du dossier patient', 'Contre-indications pour ce patient?', 'Interactions medicamenteuses a surveiller', 'Risque si on prescrit Ibuprofene?', 'Quels examens sont dus?', 'Comparer les dernieres visites'];
-    const handleQuery = async (query) => {
-        const q = query || prompt;
-        if (!q.trim() || isTyping) return;
-        setPrompt(q);
-        setIsTyping(true);
-        setDisplayedResponse('');
-        setUsedMistral(false);
-
-        try {
-            const { buildPatientContext, SYSTEM_PROMPTS } = await import('@/data/prompts');
-            const res = await fetch('/api/ai', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    systemPrompt: SYSTEM_PROMPTS.AI_ANALYSIS,
-                    userMessage: q,
-                    patientContext: buildPatientContext(patient)
-                })
-            });
-
-            const contentType = res.headers.get('content-type') || '';
-            if (contentType.includes('application/json')) throw new Error('fallback');
-
-            setUsedMistral(true);
-            const reader = res.body.getReader();
-            const decoder = new TextDecoder();
-            let buffer = '';
-            let fullText = '';
-
-            while (true) {
-                const { done, value } = await reader.read();
-                if (done) break;
-                buffer += decoder.decode(value, { stream: true });
-                const lines = buffer.split('\n');
-                buffer = lines.pop() || '';
-                for (const line of lines) {
-                    if (!line.startsWith('data: ')) continue;
-                    const data = line.slice(6).trim();
-                    if (data === '[DONE]') continue;
-                    try {
-                        const parsed = JSON.parse(data);
-                        if (parsed.content) {
-                            fullText += parsed.content;
-                            setDisplayedResponse(fullText);
-                        }
-                    } catch { }
-                }
-            }
-            setIsTyping(false);
-        } catch {
-            // Fallback: local responses
-            const resp = getLocalAnalysis(q);
-            let i = 0;
-            const interval = setInterval(() => {
-                i += 4;
-                setDisplayedResponse(resp.slice(0, i));
-                if (i >= resp.length) { clearInterval(interval); setIsTyping(false); }
-            }, 6);
-        }
-    };
-
-    const getLocalAnalysis = (q) => {
-        if (q.toLowerCase().includes('resume') || q.toLowerCase().includes('dossier')) {
-            return `RESUME DOSSIER — ${patient.firstName} ${patient.lastName}\n${'='.repeat(45)}\n\nIDENTITE\n  Age: ${patient.age} ans | Sexe: ${patient.sex} | Groupe: ${patient.bloodType}\n  Taille: ${patient.height} | Poids: ${patient.weight}\n\nALLERGIES: ${patient.allergies.join(', ')}\n\nPATHOLOGIES ACTIVES (${patient.conditions.length}):\n${patient.conditions.map(c => `  [${c.severity.toUpperCase()}] ${c.name} — ${c.details} (depuis ${c.since})`).join('\n')}\n\nMEDICAMENTS (${patient.medications.length}):\n${patient.medications.map(m => `  ${m.name} — ${m.dosage} (${m.purpose})`).join('\n')}\n\nINTERACTIONS CRITIQUES (${patient.interactions.length}):\n${patient.interactions.map(i => `  [!] ${i.drugs.join(' + ')}: ${i.risk}`).join('\n')}\n\n[Aide a la decision — La decision finale revient au medecin traitant]`;
-        } else if (q.toLowerCase().includes('contre-indication')) {
-            return `CONTRE-INDICATIONS — ${patient.firstName} ${patient.lastName}\n${'='.repeat(45)}\n\nALLERGIES CONFIRMEES:\n  [ABSOLU] Penicilline et derives\n  [ABSOLU] Sulfamides\n\nCONTRE-INDICATIONS LIEES AUX PATHOLOGIES:\n  Diabete type 2:\n    - Corticoides systemiques\n    - Gliclazide pendant jeune prolonge\n  HTA stade 2:\n    - AINS prolonges\n    - Vasoconstricteurs nasaux\n\nALLERGIES CROISEES POSSIBLES:\n  - Cephalosporines (~10%)\n  - Thiazidiques (derives sulfamides)\n\n[Aide a la decision — La decision finale revient au medecin traitant]`;
-        } else if (q.toLowerCase().includes('interaction')) {
-            return `INTERACTIONS MEDICAMENTEUSES\n${'='.repeat(45)}\n\n${patient.interactions.map(i => `[${i.severity.toUpperCase()}] ${i.drugs.join(' + ')}\n  Risque: ${i.risk}\n  Source: ${i.source}`).join('\n\n')}\n\n[Aide a la decision — La decision finale revient au medecin traitant]`;
-        } else if (q.toLowerCase().includes('ibuprofene') || q.toLowerCase().includes('prescrire')) {
-            return `ANALYSE RISQUE — Prescription Ibuprofene\n${'='.repeat(45)}\n\nRISQUES:\n  [CRITIQUE] Interaction Ibuprofene + Amlodipine\n  [ATTENTION] Risque renal (patient diabetique)\n  [ATTENTION] Risque gastrique (${patient.age} ans)\n\nALTERNATIVES:\n  1. Paracetamol 1g\n  2. Tramadol 50mg\n  3. Infiltration locale\n\n[Aide a la decision — La decision finale revient au medecin traitant]`;
-        } else if (q.toLowerCase().includes('examen') || q.toLowerCase().includes('dus')) {
-            return `EXAMENS DUS\n${'='.repeat(45)}\n\n  [EN RETARD] HbA1c trimestriel — du 08/04/2026\n  [DU] ECG de controle — dernier il y a 21 mois!\n  [PLANIFIE] Fond d'oeil annuel — Nov 2026\n  [PLANIFIE] Bilan lipidique — Juil 2026\n  [RECOMMANDE] EMG membres inferieurs\n\n[Aide a la decision — La decision finale revient au medecin traitant]`;
-        }
-        return `ANALYSE — "${q}"\n${'='.repeat(45)}\n\n  ${patient.conditions.length} pathologies actives\n  ${patient.medications.length} medicaments\n  ${patient.interactions.length} interactions\n  Allergies: ${patient.allergies.join(', ')}\n\n[Aide a la decision — La decision finale revient au medecin traitant]`;
-    };
-
     return (
         <div style={{ padding: 24, maxWidth: 900, margin: '0 auto' }}>
-            <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 4, display: 'flex', alignItems: 'center', gap: 8 }}>{sz(ICON.ai, 20)} Analyse IA du Dossier</h2>
-            <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 20 }}>Interrogez le dossier patient avec l'IA. Aucune donnee n'est envoyee a l'exterieur.</p>
-            <div className="card" style={{ marginBottom: 16 }}><div className="card-body">
-                <textarea className="form-textarea" style={{ minHeight: 80 }} placeholder="Posez une question sur le dossier du patient..." value={prompt} onChange={e => setPrompt(e.target.value)} onKeyDown={e => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), handleQuery())} />
-                <div style={{ display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap' }}>{examplePrompts.map((p, i) => <button key={i} className="pill" onClick={() => handleQuery(p)}>{p}</button>)}</div>
-                <button className="btn btn-primary" style={{ marginTop: 12 }} onClick={() => handleQuery()} disabled={isTyping}>{isTyping ? 'Analyse en cours...' : 'Analyser'}</button>
-            </div></div>
-            {(displayedResponse || isTyping) && (<div className="card fade-in"><div className="card-header"><span className={`badge ${isTyping ? 'badge-warning' : 'badge-success'}`}>{isTyping ? 'Analyse IA...' : 'Reponse IA'}</span><span className="badge badge-info">{usedMistral ? 'Mistral AI — RAG' : 'Local — Aucune donnee envoyee'}</span></div>
-                <div className="card-body"><pre style={{ fontSize: 13, lineHeight: 1.6, fontFamily: "'IBM Plex Mono', monospace", whiteSpace: 'pre-wrap', color: 'var(--text-secondary)' }}>{displayedResponse}{isTyping ? '|' : ''}</pre></div>
-            </div>)}
+            <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 4, display: 'flex', alignItems: 'center', gap: 8 }}>
+                {sz(ICON.ai, 20)} Analyse IA du Dossier
+            </h2>
+            <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 20 }}>
+                Cette fonctionnalite est maintenant centralisee dans la pop-fenetre IA (bouton en bas a droite).
+            </p>
+
+            <div className="card">
+                <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    <div className="alert alert-info" style={{ margin: 0 }}>
+                        <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 16v-4" />
+                            <path d="M12 8h.01" />
+                        </svg>
+                        <div>
+                            <div className="alert-title">Nouveau mode d acces</div>
+                            <div className="alert-text">
+                                Cliquez sur le bouton popup IA en bas a droite pour lancer le chat d'analyse consultation.
+                            </div>
+                        </div>
+                    </div>
+                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                        {['Resume complet du dossier patient', 'Contre-indications pour ce patient?', 'Interactions medicamenteuses a surveiller'].map((item) => (
+                            <span key={item} className="pill" style={{ fontSize: 11 }}>{item}</span>
+                        ))}
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
